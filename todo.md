@@ -23,7 +23,10 @@ The reference uses a full-viewport dark hero with the model image behind a heavy
 - [ ] Verify the new hero image loads in the preview and save the revision.
 - [x] Generate a high-quality hero image using the supplied ApexCut screenshot as composition reference.
 - [x] Replace the I Cut landing-page hero with the generated visual.
-- [x] Verify the new hero on desktop and mobile and save the revised checkpoint.
+- [ ] Verify the new hero on desktop and mobile and save the revised checkpoint.
+- [x] Remove the hero Book and Directions buttons.
+- [x] Add compact scroll-revealed Book and Directions controls with animation.
+- [x] Verify desktop/mobile behavior and save the revision.
 
 
 ## Hero asset validation
