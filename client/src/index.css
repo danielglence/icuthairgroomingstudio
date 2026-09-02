@@ -60,9 +60,12 @@
   .section-kicker { display: flex; align-items: center; gap: .7rem; color: #C6A15B; font-size: .63rem; font-weight: 700; letter-spacing: .2em; line-height: 1; text-transform: uppercase; }
   .section-kicker span:first-child { color: rgba(245,240,232,.45); }
   .gold-button, .outline-button, .dark-button, .text-button { display: inline-flex; align-items: center; gap: .6rem; min-height: 46px; padding: .75rem 1.15rem; font-size: .66rem; font-weight: 700; letter-spacing: .13em; line-height: 1; text-transform: uppercase; transition: transform .18s cubic-bezier(.23,1,.32,1), background-color .18s, color .18s, border-color .18s; }
-  .gold-button { background: #C6A15B; color: #0B0B0B; }
-  .gold-button:hover { background: #dfbd79; transform: translateY(-2px); }
-  .gold-button:active, .outline-button:active, .dark-button:active { transform: scale(.97); }
+  .gold-button { background: #C6A15B; color: #0B0B0B; box-shadow: 0 0 0 rgba(198,161,91,0); }
+  .gold-button svg { transition: transform .2s cubic-bezier(.23,1,.32,1); }
+  .gold-button:hover { background: #dfbd79; box-shadow: 0 9px 24px rgba(198,161,91,.2); transform: translateY(-3px); }
+  .gold-button:hover svg { transform: translateX(4px); }
+  .gold-button:focus-visible { box-shadow: 0 0 0 3px rgba(11,11,11,.9), 0 0 0 5px #C6A15B; }
+  .gold-button:active, .outline-button:active, .dark-button:active { box-shadow: none; transform: translateY(0) scale(.97); }
   .outline-button { border: 1px solid rgba(245,240,232,.35); color: #F5F0E8; }
   .outline-button:hover { border-color: #C6A15B; color: #C6A15B; transform: translateY(-2px); }
   .dark-button { background: #0B0B0B; color: #F5F0E8; }
