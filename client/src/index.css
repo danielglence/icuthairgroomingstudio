@@ -54,6 +54,10 @@
   @media (min-width: 1024px) { .section-shell { padding-block: 9rem; } }
   .font-serif { font-family: "Cormorant Garamond", Georgia, serif; }
   .font-sans { font-family: "Manrope", Arial, sans-serif; }
+  .wordmark { display: inline-flex; flex-direction: column; justify-content: center; gap: 1px; min-width: 118px; transition: opacity .2s; }
+  .wordmark:hover { opacity: .82; }
+  .wordmark-title { color: #F5F0E8; font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.55rem; font-weight: 600; letter-spacing: .22em; line-height: .82; }
+  .wordmark-subtitle { color: #C6A15B; font-family: "Manrope", Arial, sans-serif; font-size: .42rem; font-weight: 700; letter-spacing: .22em; line-height: 1.4; text-indent: .22em; white-space: nowrap; }
   .display-title { font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(3.7rem, 9vw, 7.2rem); font-weight: 500; line-height: .86; letter-spacing: -.04em; }
   .display-title em, .section-title em { color: #C6A15B; font-style: italic; font-weight: 400; }
   .section-title { font-family: "Cormorant Garamond", Georgia, serif; font-size: clamp(3rem, 6vw, 5.8rem); font-weight: 500; line-height: .88; letter-spacing: -.035em; }
