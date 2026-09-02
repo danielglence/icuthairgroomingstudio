@@ -27,6 +27,9 @@ The reference uses a full-viewport dark hero with the model image behind a heavy
 - [x] Remove the hero Book and Directions buttons.
 - [x] Add compact scroll-revealed Book and Directions controls with animation.
 - [x] Verify desktop/mobile behavior and save the revision.
+- [x] Remove the complete section 02 approach block.
+- [x] Build and verify the page after removing section 02.
+- [ ] Save the revised checkpoint.
 
 
 ## Hero asset validation
