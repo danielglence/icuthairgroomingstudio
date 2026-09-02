@@ -31,7 +31,7 @@ const BUSINESS = {
   maps: "https://www.google.com/maps/search/?api=1&query=I+Cut+Hair+Grooming+Studio,+Mudavoor,+Muvattupuzha,+Kerala+686669",
 };
 
-const heroImage = "/manus-storage/i-cut-hero_a9597633.jpg";
+const heroImage = "/manus-storage/i-cut-apex-inspired-hero_8dc16d38.jpg";
 const gallery = [
   { src: heroImage, alt: "Client with a clean modern taper haircut in the grooming studio", label: "Precision" },
   { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1400&q=85", alt: "Bright modern salon interior with styling stations and mirrors", label: "The studio" },

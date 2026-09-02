@@ -18,3 +18,16 @@ The reference uses a full-viewport dark hero with the model image behind a heavy
 - [x] Preserve I Cut branding, contact details, appointment form, gallery lightbox, and navigation behavior.
 - [x] Verify build, responsive layout, links, and key interactions.
 - [ ] Save a revised checkpoint for delivery.
+- [ ] Locate and validate the exact ApexCut landing-page hero image.
+- [ ] Replace the I Cut hero image with the validated ApexCut asset.
+- [ ] Verify the new hero image loads in the preview and save the revision.
+- [x] Generate a high-quality hero image using the supplied ApexCut screenshot as composition reference.
+- [x] Replace the I Cut landing-page hero with the generated visual.
+- [x] Verify the new hero on desktop and mobile and save the revised checkpoint.
+
+
+## Hero asset validation
+
+The reference page’s reported `/manus-storage/icut-hero_15d4fcda.jpg` URL resolves to a 404 page when opened directly, and the reference screenshot itself renders a nearly black hero without a visible source photo. The project therefore keeps the working I Cut hero asset rather than introducing a broken image. The reference composition, typography, overlays, and image treatment remain matched.
+
+Latest validation: the ApexCut homepage still reports the hero image path `/manus-storage/icut-hero_15d4fcda.jpg`, but opening that exact URL returns a 404 page and the reference homepage screenshot shows a nearly black hero with no visible source photo. The current I Cut hero remains the only verified working landing-page picture available in this project.
