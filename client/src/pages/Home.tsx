@@ -31,7 +31,7 @@ const BUSINESS = {
   maps: "https://www.google.com/maps/search/?api=1&query=I+Cut+Hair+Grooming+Studio,+Mudavoor,+Muvattupuzha,+Kerala+686669",
 };
 
-const heroImage = "/manus-storage/i-cut-apex-inspired-hero_8dc16d38.jpg";
+const heroImage = "/manus-storage/i-cut-reference-hero_2eaf3e68.jpg";
 const gallery = [
   { src: heroImage, alt: "Client with a clean modern taper haircut in the grooming studio", label: "Precision" },
   { src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1400&q=85", alt: "Bright modern salon interior with styling stations and mirrors", label: "The studio" },
@@ -154,13 +154,12 @@ export default function Home() {
         <section id="home" className="hero-section relative flex min-h-[720px] items-end overflow-hidden pb-20 pt-32 sm:min-h-screen lg:pb-28">
           <motion.img initial={reduce ? false : { scale: 1.08 }} animate={reduce ? undefined : { scale: 1 }} transition={{ duration: 1.6, ease }} src={heroImage} alt="Stylish client with a modern taper haircut inside I Cut Hair Grooming Studio" className="absolute inset-0 h-full w-full object-cover object-[62%_center]" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/75 to-ink/10" /><div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/20" />
-          <div className="container relative z-10 grid items-end gap-12 lg:grid-cols-[1fr_280px]">
+          <div className="container relative z-10">
             <div className="max-w-3xl">
               <motion.div initial={reduce ? false : { opacity: 0, y: 18 }} animate={reduce ? undefined : { opacity: 1, y: 0 }} transition={{ duration: .6, delay: .15, ease }} className="section-kicker mb-7"><span>01</span><span className="h-px w-10 bg-gold" /><span>Premium grooming studio · Muvattupuzha</span></motion.div>
               <motion.h1 initial={reduce ? false : { opacity: 0, y: 22 }} animate={reduce ? undefined : { opacity: 1, y: 0 }} transition={{ duration: .8, delay: .24, ease }} className="display-title max-w-4xl">Precision cuts.<br /><em>Confident style.</em></motion.h1>
-              <motion.p initial={reduce ? false : { opacity: 0, y: 18 }} animate={reduce ? undefined : { opacity: 1, y: 0 }} transition={{ duration: .7, delay: .36, ease }} className="mt-7 max-w-lg text-base leading-7 text-ivory/70 sm:text-lg">Expert haircuts, beard styling, and modern grooming in a studio built around your individual style.</motion.p>
+              <motion.p initial={reduce ? false : { opacity: 0, y: 18 }} animate={reduce ? undefined : { opacity: 1, y: 0 }} transition={{ duration: .7, delay: .36, ease }} className="mt-7 max-w-lg text-base leading-7 text-ivory/70 sm:text-lg">Experience expert haircuts and modern grooming in a studio focused on detail, comfort, and your individual style.</motion.p><motion.div initial={reduce ? false : { opacity: 0, y: 18 }} animate={reduce ? undefined : { opacity: 1, y: 0 }} transition={{ duration: .7, delay: .48, ease }} className="mt-8 flex flex-wrap items-center gap-3"><button onClick={() => goTo("appointment")} className="gold-button">Book an appointment <ArrowRight size={15} /></button><a href={BUSINESS.maps} target="_blank" rel="noreferrer" className="outline-button"><MapPin size={15} /> Get directions</a><a href={`tel:${BUSINESS.phone}`} className="inline-flex items-center gap-2 px-2 text-xs font-semibold tracking-[.12em] text-ivory/75 hover:text-gold"><Phone size={15} /> {BUSINESS.phone}</a></motion.div><motion.div initial={reduce ? false : { opacity: 0 }} animate={reduce ? undefined : { opacity: 1 }} transition={{ duration: .6, delay: .62, ease }} className="mt-7 flex items-center gap-3 text-gold"><span className="flex gap-1" aria-label="5 out of 5 stars">{[1,2,3,4,5].map((star) => <Star key={star} size={16} fill="currentColor" />)}</span><span className="text-xs text-ivory/75"><strong className="text-ivory">5.0</strong> rating from 35 five-star reviews</span></motion.div>
             </div>
-            <div className="hidden border-l border-white/20 pl-7 lg:block"><div className="mb-3 flex gap-1 text-gold" aria-label="5 out of 5 stars">{[1,2,3,4,5].map((star) => <Star key={star} size={15} fill="currentColor" />)}</div><p className="font-sans text-xs leading-5 text-ivory/60">5.0 rating<br />from 35 five-star reviews</p></div>
           </div>
           <button onClick={() => goTo("about")} className="scroll-cue absolute bottom-6 right-6 hidden items-center gap-3 lg:flex"><span>Scroll to explore</span><ArrowDown size={16} /></button>
         </section>
