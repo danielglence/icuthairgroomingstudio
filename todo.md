@@ -35,7 +35,10 @@ The reference uses a full-viewport dark hero with the model image behind a heavy
 - [ ] Verify desktop/mobile hero rendering and save the revision.
 - [x] Remove the complete section 05 review block.
 - [x] Renumber remaining section labels sequentially after removing reviews.
-- [x] Build, verify, and save the revised checkpoint.
+- [ ] Build, verify, and save the revised checkpoint.
+- [ ] Inspect the local Git state and target GitHub repository.
+- [ ] Push the current I Cut project to the requested GitHub remote.
+- [ ] Verify the pushed branch and commit.
 
 
 ## Hero asset validation
