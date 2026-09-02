@@ -33,6 +33,9 @@ The reference uses a full-viewport dark hero with the model image behind a heavy
 - [ ] Recreate the supplied full-screen hero composition.
 - [ ] Generate the barber-at-work hero background from the supplied reference.
 - [ ] Verify desktop/mobile hero rendering and save the revision.
+- [x] Remove the complete section 05 review block.
+- [x] Renumber remaining section labels sequentially after removing reviews.
+- [x] Build, verify, and save the revised checkpoint.
 
 
 ## Hero asset validation
