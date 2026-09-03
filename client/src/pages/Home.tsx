@@ -31,7 +31,7 @@ const BUSINESS = {
   maps: "https://www.google.com/maps/search/?api=1&query=I+Cut+Hair+Grooming+Studio,+Mudavoor,+Muvattupuzha,+Kerala+686669",
 };
 
-const ASSET_BASE = "https://raw.githubusercontent.com/danielglence/icuthairgroomingstudio/main/assets";
+const ASSET_BASE = "https://cdn.jsdelivr.net/gh/danielglence/icuthairgroomingstudio@main/assets";
 const heroImage = `${ASSET_BASE}/i-cut-reference-hero.jpg`;
 const gallery = [
   { src: heroImage, alt: "Client with a clean modern taper haircut in the grooming studio", label: "Precision" },
