@@ -33,6 +33,8 @@ The reference uses a full-viewport dark hero with the model image behind a heavy
 - [x] Inspect the deployed Vercel URL and project configuration.
 - [x] Fix the deployment so Vercel serves the built site instead of source files.
 - [ ] Verify the rendered deployment and document the corrected setup.
+- [ ] Show floating WhatsApp and Instagram buttons on the mobile right side.
+- [ ] Verify mobile spacing, build, and push the update.
 - [ ] Route each service-menu Book now action to WhatsApp with the chosen service in the message.
 - [ ] Build, verify, and push the WhatsApp service-menu update.
 - [ ] Recreate the supplied full-screen hero composition.
