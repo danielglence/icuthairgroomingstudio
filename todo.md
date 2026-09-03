@@ -32,7 +32,9 @@ The reference uses a full-viewport dark hero with the model image behind a heavy
 - [ ] Save the revised checkpoint.
 - [x] Inspect the deployed Vercel URL and project configuration.
 - [x] Fix the deployment so Vercel serves the built site instead of source files.
-- [x] Verify the rendered deployment and document the corrected setup.
+- [ ] Verify the rendered deployment and document the corrected setup.
+- [ ] Route each service-menu Book now action to WhatsApp with the chosen service in the message.
+- [ ] Build, verify, and push the WhatsApp service-menu update.
 - [ ] Recreate the supplied full-screen hero composition.
 - [ ] Generate the barber-at-work hero background from the supplied reference.
 - [ ] Verify desktop/mobile hero rendering and save the revision.

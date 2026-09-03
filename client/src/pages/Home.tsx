@@ -53,6 +53,7 @@ const services = [
 const navItems = ["Home", "About", "Services", "Gallery", "Reviews", "Contact"];
 const ease = [0.23, 1, 0.32, 1] as const;
 const whatsappUrl = "https://wa.me/917902833507?text=Hello%20I%20Cut%2C%20I%E2%80%99d%20like%20to%20book%20an%20appointment.";
+const whatsappBookingUrl = (service: string) => `https://wa.me/917902833507?text=${encodeURIComponent(`Hello I Cut, I’d like to book an appointment for ${service}.`)}`;
 
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   const reduce = useReducedMotion();
@@ -166,7 +167,7 @@ export default function Home() {
 
         <section id="services" className="section-shell border-t border-white/10 bg-charcoal">
           <div className="container"><Reveal><SectionKicker number="02">The service menu</SectionKicker><div className="mt-7 flex flex-col justify-between gap-6 md:flex-row md:items-end"><h2 className="section-title">Made for your<br /><em>signature look.</em></h2><p className="max-w-xs text-sm leading-6 text-muted">Thoughtful grooming services, clear in purpose and tailored in finish.</p></div></Reveal>
-            <div className="mt-16 grid gap-px bg-white/10 md:grid-cols-2 lg:grid-cols-3">{services.map((service, i) => { const Icon = service.icon; return <Reveal key={service.title} delay={i * .05} className="group bg-charcoal p-8 transition-colors duration-300 hover:bg-ink lg:p-9"><div className="flex items-start justify-between"><Icon size={22} className="text-gold" strokeWidth={1.4} /><span className="font-sans text-[10px] tracking-[.2em] text-muted">0{i + 1}</span></div><h3 className="mt-12 font-serif text-[27px] text-ivory">{service.title}</h3><p className="mt-3 min-h-[52px] text-sm leading-6 text-muted">{service.description}</p><div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5"><span className="font-sans text-[10px] uppercase tracking-[.16em] text-gold/90">Contact for price</span><button onClick={() => goTo("appointment")} className="flex items-center gap-2 text-xs uppercase tracking-[.12em] text-ivory/70 transition-colors hover:text-gold">Book now <ArrowRight size={14} /></button></div></Reveal>; })}</div>
+            <div className="mt-16 grid gap-px bg-white/10 md:grid-cols-2 lg:grid-cols-3">{services.map((service, i) => { const Icon = service.icon; return <Reveal key={service.title} delay={i * .05} className="group bg-charcoal p-8 transition-colors duration-300 hover:bg-ink lg:p-9"><div className="flex items-start justify-between"><Icon size={22} className="text-gold" strokeWidth={1.4} /><span className="font-sans text-[10px] tracking-[.2em] text-muted">0{i + 1}</span></div><h3 className="mt-12 font-serif text-[27px] text-ivory">{service.title}</h3><p className="mt-3 min-h-[52px] text-sm leading-6 text-muted">{service.description}</p><div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5"><span className="font-sans text-[10px] uppercase tracking-[.16em] text-gold/90">Contact for price</span><a href={whatsappBookingUrl(service.title)} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs uppercase tracking-[.12em] text-ivory/70 transition-colors hover:text-gold">Book now <ArrowRight size={14} /></a></div></Reveal>; })}</div>
           </div>
         </section>
 
