@@ -37,6 +37,9 @@ The reference uses a full-viewport dark hero with the model image behind a heavy
 - [ ] Verify mobile spacing, build, and push the update.
 - [x] Inspect gallery image sources for mobile loading failures.
 - [x] Replace unreliable gallery links with stable assets.
+- [ ] Move all deployed image assets into a publicly accessible repository path.
+- [ ] Replace Manus-storage image URLs in the app with public GitHub asset URLs.
+- [ ] Verify image loading on Vercel mobile and desktop.
 - [x] Verify all gallery images on mobile and push the fix.
 - [ ] Route each service-menu Book now action to WhatsApp with the chosen service in the message.
 - [ ] Build, verify, and push the WhatsApp service-menu update.
