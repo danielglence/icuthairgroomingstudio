@@ -21,6 +21,7 @@ import {
   Star,
   X,
 } from "lucide-react";
+import { configured, SETTINGS_ID, supabase } from "@/lib/supabase";
 
 const BUSINESS = {
   name: "I Cut Hair Grooming Studio",
@@ -82,12 +83,24 @@ export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const [whatsappLink, setWhatsappLink] = useState(whatsappUrl);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [shopSettings, setShopSettings] = useState<any>(null);
+  const [bookingBusy, setBookingBusy] = useState(false);
+  const [bookingError, setBookingError] = useState("");
   const reduce = useReducedMotion();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  useEffect(() => {
+    const client = supabase;
+    if (!client) return;
+    const load = () => client.from("shop_settings").select("*").eq("id", SETTINGS_ID).single().then(({ data }) => setShopSettings(data));
+    load();
+    const channel = client.channel("shared-booking-status").on("postgres_changes", { event: "UPDATE", schema: "public", table: "shop_settings" }, ({ new: value }) => setShopSettings(value)).subscribe();
+    return () => { client.removeChannel(channel); };
   }, []);
 
   useEffect(() => {
@@ -111,10 +124,24 @@ export default function Home() {
     return Object.keys(next).length === 0;
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validate(event.currentTarget)) return;
     const data = new FormData(event.currentTarget);
+    if (!configured || !supabase) { setBookingError("Online booking is temporarily unavailable. Please call the studio."); return; }
+    setBookingBusy(true); setBookingError("");
+    const { error } = await supabase.rpc("create_booking", {
+      p_customer_name: String(data.get("name") || ""), p_customer_phone: String(data.get("phone") || ""),
+      p_service: String(data.get("service") || ""), p_appointment_date: String(data.get("date") || ""),
+      p_appointment_time: String(data.get("time") || ""), p_message: String(data.get("message") || "") || null,
+    });
+    setBookingBusy(false);
+    if (error) {
+      const messages: Record<string,string> = { SHOP_CLOSED:"I Cut is currently closed.", BOOKINGS_PAUSED:"Bookings are temporarily paused.", TIME_BLOCKED:"That time is unavailable. Please choose another.", SLOT_TAKEN:"That time was just booked. Please choose another." };
+      const code = Object.keys(messages).find(key => error.message.includes(key));
+      setBookingError(code ? messages[code] : "We could not submit your request. Please try again."); return;
+    }
+    event.currentTarget.reset(); setSubmitted(true); return;
     const message = [
       "Hello I Cut, I’d like to confirm an appointment.",
       `Name: ${String(data.get("name") || "")}`,
@@ -129,6 +156,8 @@ export default function Home() {
   };
 
   const lightboxImage = useMemo(() => lightbox === null ? null : gallery[lightbox], [lightbox]);
+  const paused = shopSettings && !shopSettings.booking_enabled && (!shopSettings.paused_until || new Date(shopSettings.paused_until).getTime() > Date.now());
+  const closed = shopSettings && !shopSettings.shop_open;
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-ink text-ivory selection:bg-gold selection:text-ink">
@@ -168,7 +197,7 @@ export default function Home() {
 
         <section id="services" className="section-shell border-t border-white/10 bg-charcoal">
           <div className="container"><Reveal><SectionKicker number="02">The service menu</SectionKicker><div className="mt-7 flex flex-col justify-between gap-6 md:flex-row md:items-end"><h2 className="section-title">Made for your<br /><em>signature look.</em></h2><p className="max-w-xs text-sm leading-6 text-muted">Thoughtful grooming services, clear in purpose and tailored in finish.</p></div></Reveal>
-            <div className="mt-16 grid gap-px bg-white/10 md:grid-cols-2 lg:grid-cols-3">{services.map((service, i) => { const Icon = service.icon; return <Reveal key={service.title} delay={i * .05} className="group bg-charcoal p-8 transition-colors duration-300 hover:bg-ink lg:p-9"><div className="flex items-start justify-between"><Icon size={22} className="text-gold" strokeWidth={1.4} /><span className="font-sans text-[10px] tracking-[.2em] text-muted">0{i + 1}</span></div><h3 className="mt-12 font-serif text-[27px] text-ivory">{service.title}</h3><p className="mt-3 min-h-[52px] text-sm leading-6 text-muted">{service.description}</p><div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5"><span className="font-sans text-[10px] uppercase tracking-[.16em] text-gold/90">Contact for price</span><a href={whatsappBookingUrl(service.title)} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs uppercase tracking-[.12em] text-ivory/70 transition-colors hover:text-gold">Book now <ArrowRight size={14} /></a></div></Reveal>; })}</div>
+            <div className="mt-16 grid gap-px bg-white/10 md:grid-cols-2 lg:grid-cols-3">{services.map((service, i) => { const Icon = service.icon; return <Reveal key={service.title} delay={i * .05} className="group bg-charcoal p-8 transition-colors duration-300 hover:bg-ink lg:p-9"><div className="flex items-start justify-between"><Icon size={22} className="text-gold" strokeWidth={1.4} /><span className="font-sans text-[10px] tracking-[.2em] text-muted">0{i + 1}</span></div><h3 className="mt-12 font-serif text-[27px] text-ivory">{service.title}</h3><p className="mt-3 min-h-[52px] text-sm leading-6 text-muted">{service.description}</p><div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5"><span className="font-sans text-[10px] uppercase tracking-[.16em] text-gold/90">Contact for price</span><button type="button" onClick={() => goTo("appointment")} className="flex items-center gap-2 text-xs uppercase tracking-[.12em] text-ivory/70 transition-colors hover:text-gold">Book now <ArrowRight size={14} /></button></div></Reveal>; })}</div>
           </div>
         </section>
 
@@ -177,7 +206,7 @@ export default function Home() {
         <section id="gallery" className="section-shell border-t border-white/10 bg-charcoal"><div className="container"><Reveal><SectionKicker number="04">A glimpse inside</SectionKicker><div className="mt-7 flex flex-col justify-between gap-6 md:flex-row md:items-end"><h2 className="section-title">Craft in<br /><em>the frame.</em></h2><a href={BUSINESS.instagram} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs uppercase tracking-[.15em] text-gold transition-colors hover:text-ivory">See more on Instagram <MoveUpRight size={15} /></a></div></Reveal>
           <div className="gallery-grid mt-16">{gallery.map((image, i) => <Reveal key={`${image.src}-${i}`} delay={i * .05} className={`gallery-item gallery-${i + 1}`}><button onClick={() => setLightbox(i)} className="group relative block h-full w-full overflow-hidden text-left" aria-label={`Open gallery image: ${image.label}`}><img src={image.src} alt={image.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70" /><span className="absolute bottom-5 left-5 text-xs uppercase tracking-[.16em] text-ivory">{image.label}</span><span className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center border border-white/30 bg-ink/30 text-ivory opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"><MoveUpRight size={15} /></span></button></Reveal>)}</div></div></section>
 
-        <section id="appointment" className="section-shell border-t border-white/10 bg-warm text-ink"><div className="container grid gap-14 lg:grid-cols-[.8fr_1.2fr] lg:gap-24"><Reveal><SectionKicker number="05">Make it yours</SectionKicker><h2 className="section-title mt-7">Reserve<br /><em>your chair.</em></h2><p className="mt-7 max-w-sm leading-7 text-ink/65">Share a few details and we’ll help you find the right service. Your request is prepared here, then confirmed directly with the studio.</p></Reveal><Reveal delay={.1}>{submitted ? <div className="flex min-h-[400px] flex-col justify-center border-t border-ink/15 pt-10"><div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold text-ink"><Check size={22} /></div><h3 className="mt-7 font-serif text-4xl">Details received.</h3><p className="mt-4 max-w-md leading-7 text-ink/65">Your appointment details are ready. Please contact the salon to confirm your booking.</p><div className="mt-8 flex flex-wrap gap-3"><a href={whatsappLink} target="_blank" rel="noreferrer" className="dark-button"><MessageCircle size={15} /> Confirm via WhatsApp</a><a href={`tel:${BUSINESS.phone}`} className="outline-button border-ink/30 text-ink hover:border-ink hover:text-ink"><Phone size={15} /> Call the studio</a><button onClick={() => setSubmitted(false)} className="text-button">Send another request</button></div></div> : <form onSubmit={handleSubmit} noValidate className="grid gap-5 sm:grid-cols-2"><label className="field-label">Full name<input name="name" className="field-input" placeholder="Your name" aria-invalid={!!errors.name} />{errors.name && <span className="field-error">{errors.name}</span>}</label><label className="field-label">Phone number<input name="phone" type="tel" className="field-input" placeholder="Your phone number" aria-invalid={!!errors.phone} />{errors.phone && <span className="field-error">{errors.phone}</span>}</label><label className="field-label">Preferred service<select name="service" className="field-input" defaultValue="" aria-invalid={!!errors.service}><option value="" disabled>Select a service</option>{services.map(s => <option key={s.title} value={s.title}>{s.title}</option>)}</select>{errors.service && <span className="field-error">{errors.service}</span>}</label><label className="field-label">Preferred date<input name="date" type="date" className="field-input" aria-invalid={!!errors.date} />{errors.date && <span className="field-error">{errors.date}</span>}</label><label className="field-label">Preferred time<select name="time" className="field-input" defaultValue="" aria-invalid={!!errors.time}><option value="" disabled>Select a time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>{errors.time && <span className="field-error">{errors.time}</span>}</label><label className="field-label sm:col-span-2">Optional message<textarea name="message" className="field-input min-h-[100px] resize-y" placeholder="Anything you’d like us to know?" /></label><div className="sm:col-span-2"><button type="submit" className="dark-button">Prepare appointment request <ArrowRight size={15} /></button><p className="mt-4 text-xs text-ink/50">No payment required. We’ll confirm availability directly.</p></div></form>}</Reveal></div></section>
+        <section id="appointment" className="section-shell border-t border-white/10 bg-warm text-ink"><div className="container grid gap-14 lg:grid-cols-[.8fr_1.2fr] lg:gap-24"><Reveal><SectionKicker number="05">Make it yours</SectionKicker><h2 className="section-title mt-7">Reserve<br /><em>your chair.</em></h2><p className="mt-7 max-w-sm leading-7 text-ink/65">Share your preferred service and time. Every request is checked against the studio’s live availability.</p></Reveal><Reveal delay={.1}>{closed || paused ? <div className="flex min-h-[400px] flex-col justify-center border-t border-ink/15 pt-10"><Clock3 size={34}/><h3 className="mt-7 font-serif text-4xl">{closed ? "I Cut is currently closed." : "Bookings are temporarily paused."}</h3><p className="mt-4 text-ink/65">{paused && shopSettings.paused_until ? `Booking will reopen at ${new Date(shopSettings.paused_until).toLocaleTimeString("en-IN", {hour:"numeric",minute:"2-digit"})}.` : "Please check again shortly."}</p></div> : submitted ? <div className="flex min-h-[400px] flex-col justify-center border-t border-ink/15 pt-10"><div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold text-ink"><Check size={22} /></div><h3 className="mt-7 font-serif text-4xl">Request received.</h3><p className="mt-4 max-w-md leading-7 text-ink/65">Please wait for confirmation from the salon.</p><button onClick={() => setSubmitted(false)} className="text-button mt-8">Send another request</button></div> : <form onSubmit={handleSubmit} noValidate className="grid gap-5 sm:grid-cols-2"><label className="field-label">Full name<input name="name" className="field-input" placeholder="Your name" aria-invalid={!!errors.name} />{errors.name && <span className="field-error">{errors.name}</span>}</label><label className="field-label">Phone number<input name="phone" type="tel" className="field-input" placeholder="Your phone number" aria-invalid={!!errors.phone} />{errors.phone && <span className="field-error">{errors.phone}</span>}</label><label className="field-label">Preferred service<select name="service" className="field-input" defaultValue="" aria-invalid={!!errors.service}><option value="" disabled>Select a service</option>{services.map(s => <option key={s.title} value={s.title}>{s.title}</option>)}</select>{errors.service && <span className="field-error">{errors.service}</span>}</label><label className="field-label">Preferred date<input name="date" type="date" min={new Date().toISOString().split("T")[0]} className="field-input" aria-invalid={!!errors.date} />{errors.date && <span className="field-error">{errors.date}</span>}</label><label className="field-label">Preferred time<input name="time" type="time" className="field-input" aria-invalid={!!errors.time}/>{errors.time && <span className="field-error">{errors.time}</span>}</label><label className="field-label sm:col-span-2">Optional message<textarea name="message" maxLength={500} className="field-input min-h-[100px] resize-y" placeholder="Anything you’d like us to know?" /></label><div className="sm:col-span-2">{bookingError && <p className="mb-4 text-sm text-red-800">{bookingError}</p>}<button type="submit" disabled={bookingBusy} className="dark-button disabled:opacity-60">{bookingBusy ? "Checking availability…" : "Request appointment"} <ArrowRight size={15} /></button><p className="mt-4 text-xs text-ink/50">No payment required. The salon will confirm your request.</p></div></form>}</Reveal></div></section>
 
         <section id="contact" className="border-t border-white/10 bg-charcoal py-20 lg:py-28"><div className="container grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-24"><Reveal><SectionKicker number="06">Find your way here</SectionKicker><h2 className="section-title mt-7">Come by<br /><em>the studio.</em></h2><div className="mt-10 space-y-6"><div className="flex gap-4"><MapPin className="mt-1 shrink-0 text-gold" size={19} /><p className="max-w-xs leading-7 text-ivory/70">{BUSINESS.address}</p></div><div className="flex gap-4"><Phone className="mt-1 shrink-0 text-gold" size={19} /><a href={`tel:${BUSINESS.phone}`} className="text-ivory/70 hover:text-gold">{BUSINESS.phone}</a></div><div className="flex gap-4"><Clock3 className="mt-1 shrink-0 text-gold" size={19} /><p className="text-ivory/70">Contact the salon for today’s availability.</p></div></div><div className="mt-10 flex flex-wrap gap-3"><a href={BUSINESS.maps} target="_blank" rel="noreferrer" className="gold-button">Open in Google Maps <MoveUpRight size={15} /></a><a href={BUSINESS.instagram} target="_blank" rel="noreferrer" className="outline-button"><Instagram size={15} /> Instagram</a></div></Reveal><Reveal delay={.12} className="relative min-h-[350px] overflow-hidden border border-white/10 bg-ink lg:min-h-[450px]"><img src={`${ASSET_BASE}/i-cut-reference-studio.jpg`} alt="Warm interior details of I Cut Hair Grooming Studio" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-45" /><div className="absolute inset-0 bg-gradient-to-br from-ink/60 via-transparent to-ink/80" /><div className="absolute bottom-7 left-7 right-7 flex items-end justify-between"><div><p className="font-serif text-3xl text-ivory">Mudavoor</p><p className="mt-1 text-xs uppercase tracking-[.16em] text-muted">Muvattupuzha · Kerala</p></div><MapPin className="text-gold" size={25} /></div></Reveal></div></section>
       </main>
