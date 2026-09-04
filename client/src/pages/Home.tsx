@@ -126,8 +126,9 @@ export default function Home() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!validate(event.currentTarget)) return;
-    const data = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    if (!validate(form)) return;
+    const data = new FormData(form);
     if (!configured || !supabase) { setBookingError("Online booking is temporarily unavailable. Please call the studio."); return; }
     setBookingBusy(true); setBookingError("");
     const { error } = await supabase.rpc("create_booking", {
@@ -144,7 +145,7 @@ export default function Home() {
       window.alert(errorMessage);
       return;
     }
-    event.currentTarget.reset();
+    form.reset();
     setSubmitted(true);
     window.alert("Your booking has been submitted successfully. Please wait for confirmation from the salon.");
     window.scrollTo({ top: document.getElementById("appointment")?.offsetTop || 0, behavior: "smooth" });
