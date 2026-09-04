@@ -48,7 +48,7 @@ const services = [
   { title: "Detan", description: "A refreshing detan treatment that helps remove dullness and restore a cleaner, brighter look.", icon: Sparkles },
   { title: "Beard Trim & Styling", description: "Clean lines, balanced shape, and a finish that lets your beard work with your face.", icon: Scissors },
   { title: "Haircut & Beard Combo", description: "A complete grooming experience pairing a precision haircut with expert beard shaping and a polished finish.", icon: Check },
-  { title: "Hair Wash & Finish", description: "A refreshing wash followed by a clean, wearable finish that keeps its shape.", icon: Sparkles },
+  { title: "Hair Colouring", description: "Rich, even colour tailored to your style, finished with depth, shine, and a naturally confident look.", icon: Sparkles },
   { title: "Kids’ Haircut", description: "Patient, precise grooming for younger guests in a calm studio setting.", icon: Scissors },
 ];
 
