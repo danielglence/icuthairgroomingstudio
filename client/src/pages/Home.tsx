@@ -141,7 +141,10 @@ export default function Home() {
       const code = Object.keys(messages).find(key => error.message.includes(key));
       setBookingError(code ? messages[code] : "We could not submit your request. Please try again."); return;
     }
-    event.currentTarget.reset(); setSubmitted(true); return;
+    event.currentTarget.reset();
+    setSubmitted(true);
+    window.scrollTo({ top: document.getElementById("appointment")?.offsetTop || 0, behavior: "smooth" });
+    return;
     const message = [
       "Hello I Cut, I’d like to confirm an appointment.",
       `Name: ${String(data.get("name") || "")}`,
