@@ -147,6 +147,7 @@ export default function Home() {
     }
     form.reset();
     setSubmitted(true);
+    fetch("https://icuthair.vercel.app/api/notify-owner", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: String(data.get("name") || ""), service: String(data.get("service") || ""), date: String(data.get("date") || ""), time: String(data.get("time") || "") }) }).catch(() => undefined);
     window.alert("Your booking has been submitted successfully. Please wait for confirmation from the salon.");
     window.scrollTo({ top: document.getElementById("appointment")?.offsetTop || 0, behavior: "smooth" });
     return;
