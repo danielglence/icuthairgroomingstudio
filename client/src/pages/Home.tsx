@@ -139,10 +139,14 @@ export default function Home() {
     if (error) {
       const messages: Record<string,string> = { SHOP_CLOSED:"I Cut is currently closed.", BOOKINGS_PAUSED:"Bookings are temporarily paused.", TIME_BLOCKED:"That time is unavailable. Please choose another.", SLOT_TAKEN:"That time was just booked. Please choose another." };
       const code = Object.keys(messages).find(key => error.message.includes(key));
-      setBookingError(code ? messages[code] : "We could not submit your request. Please try again."); return;
+      const errorMessage = code ? messages[code] : "We could not submit your request. Please try again.";
+      setBookingError(errorMessage);
+      window.alert(errorMessage);
+      return;
     }
     event.currentTarget.reset();
     setSubmitted(true);
+    window.alert("Your booking has been submitted successfully. Please wait for confirmation from the salon.");
     window.scrollTo({ top: document.getElementById("appointment")?.offsetTop || 0, behavior: "smooth" });
     return;
     const message = [
