@@ -44,7 +44,7 @@ const gallery = [
 ];
 
 const services = [
-  { title: "Signature Haircut", description: "A considered cut shaped around your features, texture, and everyday rhythm.", icon: Scissors },
+  { title: "Hair Wash & Finish", description: "A refreshing cleanse followed by careful drying and a polished finish for effortlessly sharp hair.", icon: Scissors },
   { title: "Detan", description: "A refreshing detan treatment that helps remove dullness and restore a cleaner, brighter look.", icon: Sparkles },
   { title: "Beard Trim & Styling", description: "Clean lines, balanced shape, and a finish that lets your beard work with your face.", icon: Scissors },
   { title: "Haircut & Beard Combo", description: "A complete grooming experience pairing a precision haircut with expert beard shaping and a polished finish.", icon: Check },
