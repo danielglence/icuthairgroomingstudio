@@ -108,6 +108,14 @@ export default function Home() {
     return () => { document.body.style.overflow = ""; };
   }, [lightbox]);
 
+  useEffect(() => {
+    const input = document.querySelector<HTMLInputElement>('input[name="time"]');
+    if (!input) return;
+    input.min = "09:30";
+    input.max = "21:00";
+    input.step = "1800";
+  }, [shopSettings, submitted]);
+
   const goTo = (id: string) => {
     setMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
@@ -120,6 +128,8 @@ export default function Home() {
     };
     const next: Record<string, string> = {};
     Object.entries(required).forEach(([key, message]) => { if (!String(data.get(key) || "").trim()) next[key] = message; });
+    const time = String(data.get("time") || "");
+    if (time && (time < "09:30" || time > "21:00" || Number(time.split(":")[1]) % 30 !== 0)) next.time = "Please choose a 30-minute time slot between 9:30 AM and 9:00 PM.";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
